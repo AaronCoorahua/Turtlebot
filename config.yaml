@@ -1,0 +1,112 @@
+robot:
+  ip: "192.168.0.103"
+  data_port: 6000        # robot → client (telemetry)
+  control_port: 5007     # client → robot (cmd_vel)
+  pairing_code: "ROBOT_A_42"
+  name: "turtlebot4_lite_1"
+  domain_id: 4
+
+movement:
+  linear_speed: 0.46     # m/s — máximo Create 3 (competencia)
+  angular_speed: 1.80    # rad/s — reglas duras (semáforo, obstacle recovery)
+  send_hz: 50            # frecuencia de envío de comandos de velocidad
+  # Acciones del agente RL (linear m/s, angular rad/s)
+  # FORWARD a máxima velocidad; giros con velocidad lineal residual para no perder carrera
+  rl_actions:
+    - [0.46,  0.00]   # 0: FORWARD      — máxima velocidad
+    - [0.35,  0.90]   # 1: GENTLE_LEFT  — curva suave izquierda
+    - [0.35, -0.90]   # 2: GENTLE_RIGHT — curva suave derecha
+    - [0.05,  1.80]   # 3: SHARP_LEFT   — giro en seco (mínima vel para no chocar al girar)
+    - [0.05, -1.80]   # 4: SHARP_RIGHT  — giro en seco
+
+traffic_light:
+  red_stop_seconds: 3.0
+  min_contour_area: 500  # px² — ignore small blobs
+  # HSV ranges (OpenCV: H 0-179, S 0-255, V 0-255)
+  hsv_red_lower1: [0,   120, 70]
+  hsv_red_upper1: [10,  255, 255]
+  hsv_red_lower2: [160, 120, 70]   # red wraps around 180°
+  hsv_red_upper2: [179, 255, 255]
+  hsv_green_lower: [40,  60, 60]
+  hsv_green_upper: [90, 255, 255]
+
+arrow:
+  min_contour_area: 800    # px² — ignorar ruido pequeño
+  split_threshold: 0.12    # fracción mínima de asimetría izq/der para decidir dirección
+  # Rango HSV del color de las flechas (amarillo por defecto)
+  # Para cambiar color: ajustar lower/upper. Ej. azul: [100,150,50] / [130,255,255]
+  hsv_lower: [18, 100, 100]
+  hsv_upper: [35, 255, 255]
+
+qr:
+  max_checkpoints: 3
+
+# Color de las paredes del circuito — respaldo visual al LIDAR.
+# Activar si las paredes tienen un color específico y configurable.
+walls:
+  detection_enabled: false
+  hsv_lower: [0,  0,  170]
+  hsv_upper: [179, 40, 255]
+  min_fill_ratio: 0.40
+  scan_strip_pct: 0.30
+
+# ── Obstáculos (detección por corredor físico del robot) ─────────────────────
+#
+# El robot ocupa un corredor de ancho = 2 × (robot_radius + lateral_margin).
+# Cada lectura LIDAR se proyecta a (fwd, lat). Si |lat| < corridor_half y
+# fwd < stopping_dist → emergencia. Si |lat| < corridor_half*1.5 y
+# fwd < look_ahead_dist → advertencia lateral (corrección suave).
+obstacle:
+  robot_radius: 0.175       # m — radio físico TurtleBot4 Lite (base circular)
+  lateral_margin: 0.08      # m — margen de seguridad adicional por lado
+  stopping_dist: 0.38       # m — parar si algo entra en el corredor a < esta dist
+  look_ahead_dist: 0.60     # m — corrección suave si algo en corredor amplio a < esta dist
+  side_min_dist: 0.26       # m — pared pura (±90°) a < esta dist → corrección suave
+  min_range: 0.10           # m — ignorar lecturas < esto (reflecciones propias)
+  min_threat_count: 2       # lecturas amenazantes mínimas para confirmar peligro
+  min_valid_readings: 5     # lecturas válidas mínimas para sectores puros (±90°)
+  side_cone_deg: 15         # ± grados alrededor de ±90° para sector puro lateral
+  backup_speed: -0.15       # m/s al dar marcha atrás
+  backup_seconds: 0.40      # tiempo de marcha atrás antes de girar
+  turn_seconds: 1.20        # tiempo girando después del backup
+  side_correct_w: 0.70      # rad/s de corrección suave para obstáculos laterales
+
+signs:
+  stop_duration: 5.0        # segundos detenido al ver señal STOP
+  clear_threshold: 0.50     # m — LIDAR lateral debe superar esto para ejecutar el giro
+  turn_angular_speed: 1.80  # rad/s para el giro de 90°
+  turn_duration_90: 0.87    # segundos ≈ (π/2) / 1.80
+  orb_min_matches: 15       # mínimo de buenos matches ORB para confirmar una señal
+
+rl:
+  enabled: true
+  image_size: 64             # resolución de la imagen de entrada al agente (NxN)
+  step_interval: 5           # decide cada N pasos de control (50 Hz / 5 = 10 Hz)
+  max_episode_steps: 300     # episodio virtual termina a los N pasos RL (~30 s)
+  model_path: "models/ppo_turtlebot.zip"
+  save_every_steps: 500      # guardar modelo cada N pasos RL globales
+
+  # ── Hiperparámetros PPO ──────────────────────────────────────────────────
+  n_steps: 128               # pasos recolectados antes de cada actualización
+  batch_size: 32             # mini-batch para el update
+  n_epochs: 4                # épocas PPO por actualización
+  gamma: 0.99                # factor de descuento
+  gae_lambda: 0.95           # factor λ para Generalized Advantage Estimation
+  learning_rate: 0.0003
+  clip_range: 0.20           # clip del ratio de política (estabilidad)
+  ent_coef: 0.02             # coeficiente de entropía (más alto = más exploración inicial)
+
+  # ── Función de recompensa ────────────────────────────────────────────────
+  # Filosofía para competencia: ir rápido > seguir flechas > no chocar.
+  # La penalización de proximidad es cuadrática (super-lineal) para que el agente
+  # aprenda a anticipar mucho antes de chocar, no solo al borde del impacto.
+  reward:
+    forward_step: 0.20       # recompensa base por avanzar
+    speed_bonus: 0.10        # bono extra solo para acción FORWARD (máxima velocidad)
+    spin_penalty: 0.08       # penalizar giro en seco (evita espirales)
+    proximity_penalty: 3.00  # base de penalización proporcional a cercanía (cuadrática)
+    collision_penalty: 15.00 # colisión dentro del corredor → episodio termina
+    arrow_reward: 2.00       # seguir la flecha correctamente
+    arrow_penalty: 0.50      # ignorar o contradecir la flecha
+    red_light_penalty: 2.00  # avanzar con semáforo rojo
+    checkpoint_reward: 25.00 # QR nuevo detectado

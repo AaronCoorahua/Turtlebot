@@ -1,0 +1,105 @@
+prender nuevo turtlebot
+conectarse a la red turtlebot4
+usar el comando: ssh ubuntu@10.42.0.1
+la contraseña siempre es turtlebot4
+turtlebot4-setup
+meterles los parámetros de wifi
+Lab_Computech_5G
+contraseña: Computech2025!
+entrar a la ip del turtlebot por el puerto 8080
+meterle al create 3 los parámetros de red
+Por la maquina virtual has un ssh competitivo al robot
+con echo $ROS_DOMAIN_ID vez la id, se cambia con el comando export ROS_DOMAIN_ID=(numero entre 0 y 255) también hacer en la VM
+source /opt/ros/jazzy/setup.bash (para actualizar las variables de entorno)
+En el robot:
+sudo apt update
+sudo mkdir -p /usr/share/keyrings
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+  | sudo gpg --dearmor -o /usr/share/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+http://packages.ros.org/ros2/ubuntu noble main" \
+| sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+sudo apt update
+sudo apt install -y ros-$ROS_DISTRO-demo-nodes-cpp ros-$ROS_DISTRO-demo-nodes-py
+
+si todo salió bien ejecutar en el turtle este comando:
+ros2 run demo_nodes_cpp listener
+
+y en la MV el siguiente
+ros2 run demo_nodes_cpp talker
+
+Si vez la comunicación están bien. Sino llamar a Cortijo
+
+entrar a turtlebot4-setup
+reiniciar el create3, iniciar el ROS aplicar todo
+
+esperar que el robot haga un sonido chévere asi alegre pu puru pupu
+
+
+instalar todos los sensores
+
+sudo apt install -y \
+  ros-jazzy-rplidar-ros \
+  ros-jazzy-depthai-ros \
+  ros-jazzy-irobot-create-nodes \
+  ros-jazzy-turtlebot4-msgs \
+  ros-jazzy-turtlebot4-description \
+  ros-jazzy-turtlebot4-bringup
+
+apaga y vuelve a prender el robot
+
+al reconectarte ejecutar
+ros2 launch turtlebot4_bringup lite.launch.py
+
+conectate a otra terminal y deberías ejecutar esto y ver:
+
+ubuntu@turtlebot4:~$ ros2 topic list 
+/battery_state
+/cmd_audio
+/cmd_lightring
+/cmd_vel
+/cmd_vel_unstamped
+/diagnostics
+/diagnostics_agg
+/diagnostics_toplevel_state
+/dock_status
+/function_calls
+/hazard_detection
+/imu
+/interface_buttons
+/ip
+/joint_states
+/joy
+/joy/set_feedback
+/mouse
+/oakd/imu/data
+/oakd/rgb/preview/camera_info
+/oakd/rgb/preview/image_raw
+/oakd/rgb/preview/image_raw/compressed
+/oakd/rgb/preview/image_raw/compressedDepth
+/oakd/rgb/preview/image_raw/theora
+/oakd/rgb/preview/image_raw/zstd
+/odom
+/parameter_events
+/robot_description
+/rosout
+/scan
+/tf
+/tf_static
+/wheel_status
+
+Si no llamar a Cortijo
+
+Probar movimiento
+
+En el turtle:
+ros2 topic echo /cmd_vel
+En la MV
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true
+
+activar el lidar
+ros2 launch turtlebot4_bringup rplidar.launch.py
+activar la camara
+ros2 launch turtlebot4_bringup oakd.launch.py
+
+Si no funciona llamar a Cortijo
