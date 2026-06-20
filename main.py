@@ -113,6 +113,9 @@ class AutonomousController:
         self._sign_detector = SignDetector(cfg.get("signs", {}))
         self._sign_cfg      = cfg.get("signs", {})
         self._turn_until:   float = 0.0
+        # Cooldown: tras atender una señal, ignorar nuevas detecciones unos
+        # segundos para que el robot se aleje y no la vuelva a disparar.
+        self._sign_cooldown_until: float = 0.0
 
         # Sensor data
         self._frame: np.ndarray | None = None
@@ -341,21 +344,31 @@ class AutonomousController:
             self._state = State.STOPPED
             return
 
+        # Cooldown: tras atender una señal, ignorar nuevas hasta alejarse,
+        # evitando re-disparos (p. ej. el STOP sigue en cuadro tras los 5s).
+        sign_ready = sign != "NONE" and now >= self._sign_cooldown_until
+
         # ── 5. Señal STOP detectada — detener 5 segundos ─────────────────────
-        if sign == "STOP" and self._state == State.MOVING:
+        if sign_ready and sign == "STOP" and self._state == State.MOVING:
             logger.info("STOP sign → STOPPED 5s")
             self._stop()
             self._red_until = now + self._sign_cfg.get("stop_duration", 5.0)
+            self._sign_cooldown_until = self._red_until + \
+                self._sign_cfg.get("cooldown_seconds", 4.0)
             self._state = State.STOPPED
             return
 
         # ── 6. Señales de giro ────────────────────────────────────────────────
-        if self._state == State.MOVING:
+        if sign_ready and self._state == State.MOVING:
             if sign == "DER":
                 logger.info("DER sign → PENDING_DER")
+                self._sign_cooldown_until = now + \
+                    self._sign_cfg.get("cooldown_seconds", 4.0)
                 self._state = State.PENDING_DER
             elif sign == "IZQ":
                 logger.info("IZQ sign → PENDING_IZQ")
+                self._sign_cooldown_until = now + \
+                    self._sign_cfg.get("cooldown_seconds", 4.0)
                 self._state = State.PENDING_IZQ
 
         # ── 7. Corrección lateral suave (sin frenar) ──────────────────────────
@@ -476,7 +489,7 @@ class AutonomousController:
         if frame is not None:
             self._decide(frame, scan)
 
-        return cv2.waitKey(1) & 0xFF == ord("q")
+        return False
 
     def stop(self):
         """Para el robot, cierra sockets y guarda el modelo."""
@@ -485,7 +498,6 @@ class AutonomousController:
         if self._use_rl:
             self._rl.save()
         self._ctrl_sock.close()
-        cv2.destroyAllWindows()
         logger.info(f"Controller stopped. Checkpoints: {self._vision.checkpoints}")
 
     def do_recovery(self, backup_s: float | None = None,

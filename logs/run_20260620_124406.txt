@@ -1,0 +1,16 @@
+12:44:06 [INFO] [SESSION] Stats cargadas — 0 eps | 0 pasos RL
+12:44:06 [INFO] [SESSION] Stats cargadas — 0 eps | 0 pasos RL
+12:44:06 [INFO] [RL] Cargando modelo PPO: models/ppo_turtlebot.zip
+12:44:06 [INFO] [RL] Cargando modelo PPO: models/ppo_turtlebot.zip
+12:44:07 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+12:44:07 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+12:44:07 [INFO] Handshake → ('192.168.0.103', 6000)
+12:44:07 [INFO] Handshake → ('192.168.0.103', 6000)
+12:44:07 [INFO] Controller threads started.
+12:44:07 [INFO] Controller threads started.
+12:44:07 [INFO] [SESSION] Sesión 20260620_124407 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+12:44:07 [INFO] [SESSION] Sesión 20260620_124407 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+12:44:07 [INFO] [SESSION] ── Episodio 1 iniciando ──
+12:44:07 [INFO] [SESSION] ── Episodio 1 iniciando ──
+12:44:07 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip
+12:44:07 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip

@@ -1,0 +1,42 @@
+13:11:47 [INFO] [SESSION] Stats cargadas — 0 eps | 0 pasos RL
+13:11:47 [INFO] [SESSION] Stats cargadas — 0 eps | 0 pasos RL
+13:11:47 [INFO] [RL] Cargando modelo PPO: models/ppo_turtlebot.zip
+13:11:47 [INFO] [RL] Cargando modelo PPO: models/ppo_turtlebot.zip
+13:11:48 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+13:11:48 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+13:11:48 [INFO] Controller threads started.
+13:11:48 [INFO] Handshake → ('192.168.0.103', 6000)
+13:11:48 [INFO] Controller threads started.
+13:11:48 [INFO] [SESSION] Sesión 20260620_131148 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+13:11:48 [INFO] Handshake → ('192.168.0.103', 6000)
+13:11:48 [INFO] [SESSION] Sesión 20260620_131148 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+13:11:48 [INFO] [SESSION] ── Episodio 1 iniciando ──
+13:11:48 [INFO] [SESSION] ── Episodio 1 iniciando ──
+13:11:48 [INFO] Paired with 'turtlebot4_lite_1'
+13:11:48 [INFO] Paired with 'turtlebot4_lite_1'
+13:11:48 [INFO] Receiving telemetry…
+13:11:48 [INFO] Receiving telemetry…
+13:12:39 [INFO] 
+[SESSION] Ctrl+C — cerrando limpiamente...
+13:12:39 [INFO] 
+[SESSION] Ctrl+C — cerrando limpiamente...
+13:12:39 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip
+13:12:39 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip
+13:12:39 [INFO] Controller stopped. Checkpoints: []
+13:12:39 [INFO] Controller stopped. Checkpoints: []
+13:12:39 [INFO] 
+[SESSION] ════ Sesión terminada ════
+  Episodios esta sesión : 0
+  Pasos RL esta sesión  : 0
+  Checkpoints           : 0
+  Duración              : 0.8 min
+  Total histórico       : 0 eps | 0 pasos RL
+  Stats guardadas en    : models/session_stats.json
+13:12:39 [INFO] 
+[SESSION] ════ Sesión terminada ════
+  Episodios esta sesión : 0
+  Pasos RL esta sesión  : 0
+  Checkpoints           : 0
+  Duración              : 0.8 min
+  Total histórico       : 0 eps | 0 pasos RL
+  Stats guardadas en    : models/session_stats.json

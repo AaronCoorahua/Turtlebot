@@ -1,0 +1,14 @@
+12:43:03 [INFO] [RL] Iniciando modelo PPO nuevo
+12:43:03 [INFO] [RL] Iniciando modelo PPO nuevo
+12:43:06 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+12:43:06 [INFO] [MAIN] RL agent activo — aprendizaje online habilitado
+12:43:06 [INFO] Controller threads started.
+12:43:06 [INFO] Handshake → ('192.168.0.103', 6000)
+12:43:06 [INFO] Controller threads started.
+12:43:06 [INFO] Handshake → ('192.168.0.103', 6000)
+12:43:06 [INFO] [SESSION] Sesión 20260620_124306 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+12:43:06 [INFO] [SESSION] Sesión 20260620_124306 iniciada. Total histórico: 0 eps. Ctrl+C o Q para terminar.
+12:43:06 [INFO] [SESSION] ── Episodio 1 iniciando ──
+12:43:06 [INFO] [SESSION] ── Episodio 1 iniciando ──
+12:43:06 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip
+12:43:06 [INFO] [RL] Modelo guardado: models/ppo_turtlebot.zip

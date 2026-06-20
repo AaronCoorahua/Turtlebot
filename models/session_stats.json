@@ -1,0 +1,79 @@
+{
+  "total_episodes": 0,
+  "total_rl_steps": 0,
+  "total_checkpoints": 0,
+  "best_ep_reward": -Infinity,
+  "sessions": [
+    {
+      "id": "20260620_124306",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.0
+    },
+    {
+      "id": "20260620_124407",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.0
+    },
+    {
+      "id": "20260620_124516",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 1.3
+    },
+    {
+      "id": "20260620_125948",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 4.8
+    },
+    {
+      "id": "20260620_130444",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 3.8
+    },
+    {
+      "id": "20260620_130847",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.1
+    },
+    {
+      "id": "20260620_131043",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.4
+    },
+    {
+      "id": "20260620_131148",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.8
+    },
+    {
+      "id": "20260620_131256",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 1.9
+    },
+    {
+      "id": "20260620_131523",
+      "episodes": 0,
+      "rl_steps": 0,
+      "checkpoints": 0,
+      "duration_min": 0.5
+    }
+  ],
+  "episode_log": []
+}

@@ -1,7 +1,10 @@
+# ══════════════════════════════════════════════════════════════════════════════
+#  CONEXIÓN — CAMBIAR AQUÍ si el robot cambia de IP o se usan otros puertos
+# ══════════════════════════════════════════════════════════════════════════════
 robot:
-  ip: "192.168.0.103"
-  data_port: 6000        # robot → client (telemetry)
-  control_port: 5007     # client → robot (cmd_vel)
+  ip: "192.168.0.103"    # ← IP del TurtleBot4 en la red del lab (verificar con `ip addr` en el robot)
+  data_port: 6000        # robot → PC : telemetría (SCAN + IMG)  — enviador.py escucha aquí
+  control_port: 5007     # PC → robot : cmd_vel                  — recibidor.py escucha aquí
   pairing_code: "ROBOT_A_42"
   name: "turtlebot4_lite_1"
   domain_id: 4
@@ -77,6 +80,7 @@ signs:
   turn_angular_speed: 1.80  # rad/s para el giro de 90°
   turn_duration_90: 0.87    # segundos ≈ (π/2) / 1.80
   orb_min_matches: 15       # mínimo de buenos matches ORB para confirmar una señal
+  cooldown_seconds: 4.0     # tras atender una señal, ignorar nuevas detecciones N s (evita re-disparo del STOP que sigue en cuadro)
 
 rl:
   enabled: true
